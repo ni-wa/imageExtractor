@@ -12,7 +12,12 @@ public class Starter {
 
 	public static void main(String[] args) throws IOException {
 		
-		Path startDirectory = Paths.get("C:\\Users\\nw\\Documents\\tmp\\");
+//		Path startDirectory = Paths.get("C:\\Users\\nw\\Documents\\tmp\\");
+		Path startDirectory = Paths.get("C:\\Users\\nw\\Documents\\AMKAT 2015\\");
+		
+		Path resultDirectory = Paths.get("C:\\Users\\nw\\Documents\\tmp\\results");
+		
+		DirectoryService ds = new DirectoryService(resultDirectory);
 		
 		/*
 		 * 1 get pdf files as array
@@ -24,13 +29,13 @@ public class Starter {
 		List<Path> pathList = ff.listSourceFiles(startDirectory);
 		
 		BookmarkExtractor bookmarkExtractor = new BookmarkExtractor();
-		ImageExtractor ie = new ImageExtractor();
+		ImageExtractor ie = new ImageExtractor(ds);
 		
 		for (Path path : pathList) {
 			List<PageBookmark> bookmarkList  = new ArrayList<>();
 			bookmarkList = bookmarkExtractor.getBookmarks(path);
 			bookmarkList.removeIf(Objects::isNull);
-			ie.extractImages(path, bookmarkList);
+			ie.extractImages(path, bookmarkList, ds);
 		}
 		
 		

@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.apache.pdfbox.contentstream.PDFGraphicsStreamEngine;
@@ -20,13 +21,18 @@ import org.apache.pdfbox.tools.imageio.ImageIOUtil;
 
 public class ImageExtractor extends PDFStreamEngine {
 
+//	public  File resultFolder;
+	DirectoryService ds;
+	public ImageExtractor(DirectoryService ds){
+		this.ds = ds;
+		
+	}
+	
 	File resource;
-	public final File RESULT_FOLDER = new File("C:\\Users\\nw\\Documents\\tmp\\results");
 
-
-
-	public void extractImages(Path path, List<PageBookmark> bookmarkList) throws InvalidPasswordException, IOException{
+	public void extractImages(Path path, List<PageBookmark> bookmarkList, DirectoryService ds) throws InvalidPasswordException, IOException{
 		File resource = path.toFile();
+		FileNameService fileNameService = new FileNameService();
 		String pdfFileName = path.getFileName().toString().replace(".pdf", "");
 		PDDocument document = PDDocument.load(resource);
 		int page = 1;
@@ -42,11 +48,16 @@ public class ImageExtractor extends PDFStreamEngine {
 				{
 					if (pdImage instanceof PDImageXObject)
 					{
+						
 						PDImageXObject image = (PDImageXObject)pdImage;
 						System.out.println("P:" + currentPage + "\t  " + "Index=" + index + "\t" + pdfFileName);
 						String bookmarkName = bookmarkList.get(currentPage - 1).getBookmark();
-						String imageFileName = bookmarkName + "_p" + currentPage + "_" + pdfFileName + ".jpg";
-						File file = new File(RESULT_FOLDER, String.format(imageFileName, currentPage, index, image.getSuffix()));
+						String imageFileName = bookmarkName + " " + pdfFileName + "_p" + currentPage + ".jpg";
+						imageFileName = fileNameService.runAllStringFixes(imageFileName);
+						System.out.println("imageFileName=" +imageFileName + "---");
+						System.out.println("imageFileName.length()=" + imageFileName.length());
+						Path destinationPath = ds.sort(Paths.get(imageFileName));
+						File file = new File(destinationPath.toString(), String.format(imageFileName, currentPage, index, image.getSuffix()));
 						ImageIOUtil.writeImage(image.getImage(), image.getSuffix(), new FileOutputStream(file));
 						index++;
 					}
