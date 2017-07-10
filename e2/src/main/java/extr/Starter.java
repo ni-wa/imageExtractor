@@ -13,9 +13,16 @@ public class Starter {
 	public static void main(String[] args) throws IOException {
 		
 //		Path startDirectory = Paths.get("C:\\Users\\nw\\Documents\\tmp\\");
-		Path startDirectory = Paths.get("C:\\Users\\nw\\Documents\\AMKAT 2015\\");
+//		Path startDirectory = Paths.get("C:\\Users\\nw\\Documents\\AMKAT 2015\\");
 		
-		Path resultDirectory = Paths.get("C:\\Users\\nw\\Documents\\tmp\\results");
+//		Path resultDirectory = Paths.get("C:\\Users\\nw\\Documents\\tmp\\results");
+		
+		
+//		 Linux test
+		Path startDirectory = Paths.get("/mnt/c/dev/pdfToJpg/input");
+		Path resultDirectory = Paths.get("/mnt/c/dev/pdfToJpg/output");
+//		Path startDirectory = Paths.get("/home/nw/dev/imeExpTest");
+//		Path resultDirectory = Paths.get("/home/nw/dev/destTest");
 		
 		DirectoryService ds = new DirectoryService(resultDirectory);
 		

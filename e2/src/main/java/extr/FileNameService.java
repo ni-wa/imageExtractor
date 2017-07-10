@@ -4,7 +4,7 @@ public class FileNameService {
 	
 	
 	public static String removeSpaceBeforeMmAndCm(String inputString){
-		String pattern = "(\\d)(\\s+)([cm]m)";
+		String pattern = "(\\d)(\\s+)(cm|mm|tum)";
 		String r = inputString.replaceAll(pattern, "$1$3");
 		System.out.println(r);
 		return r;
@@ -20,31 +20,31 @@ public class FileNameService {
 		return inputString.replace(' ', '_');
 	}
 	public static String capADots(String inputString){
-		return inputString.replace('Ä', 'A');
+		return inputString.replace('Ã„', 'A');
 	}
 	public static String capACircle(String inputString){
-		return inputString.replace('Å', 'A');
+		return inputString.replace('Ã…', 'A');
 	}
 	public static String capODots(String inputString){
-		return inputString.replace('Ö', 'O');
+		return inputString.replace('Ã–', 'O');
 	}
 	public static String aDots(String inputString){
-		return inputString.replace('ä', 'a');
+		return inputString.replace('Ã¤', 'a');
 	}
 	public static String aCircle(String inputString){
-		return inputString.replace('å', 'a');
+		return inputString.replace('Ã¥', 'a');
 	}
 	public static String oDots(String inputString){
-		return inputString.replace('ö', 'o');
+		return inputString.replace('Ã¶', 'o');
 	}
 	public static String capUDots(String inputString){
-		return inputString.replace('Ü', 'U');
+		return inputString.replace('k', 'U');
 	}
 	public static String uDots(String inputString){
-		return inputString.replace('ü', 'u');
+		return inputString.replace('k', 'u');
 	}
 	public static String half(String inputString){
-		return inputString.replaceAll("½", "half");
+		return inputString.replaceAll("Â½", "half");
 	}
 	
 	public static String multipleUnderscore(String inputString){
@@ -54,6 +54,14 @@ public class FileNameService {
 		return r;
 	}
 	
+//	public static String cmToMm(String inputString){
+//		String pattern = "(\\.[0-9])(cm)";
+//		String r = inputString.replaceAll(pattern, "$1mm");
+		
+//		String pattern2 = "([0-9])(cm)";
+//		String r2 = r.replaceAll(pattern2, "$10mm");
+//		return r;
+//	}
 	
 	public static String removeBadChars(String inputString){
 //		String pattern = "(\\d)(\\s+)([cm]m)";
@@ -72,10 +80,12 @@ public class FileNameService {
 		result = aDots(result);
 		result = aCircle(result);
 		result = oDots(result);
-		result = capUDots(result);
-		result = uDots(result);
+//		result = capUDots(result);
+//		result = uDots(result);
 		result = removeBadChars(result);
 		result = multipleUnderscore(result);
+//		result = cmToMm(result);
+		
 		return result;
 	}
 	

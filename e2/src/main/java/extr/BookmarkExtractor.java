@@ -115,6 +115,9 @@ public class BookmarkExtractor {
 		// Fill list so every page has a bookmark text
 		int currPage;
 		pageBookmarks.removeIf(Objects::isNull);
+		if (pageBookmarks.size() == 0) {
+			return null;
+		}
 		for (int i = 0; i < noOfPages; i++) {
 			if (i >= pageBookmarks.size()) {
 				PageBookmark pg = new PageBookmark(i + 1, pageBookmarks.get(i - 1).getBookmark());
