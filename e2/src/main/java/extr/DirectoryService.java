@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,80 +15,107 @@ import jdk.nashorn.internal.codegen.TypeMap;
 
 public class DirectoryService {
 
+	Path resultBasePath;
+	Path AToZ;
+
+	String sysDirSplitter;
+	String sysBasePath;
+
 	/*
 	 * Set files to correct dir by first char in file name 
 	 */
-	Map<String,String> ammoType = new HashMap<String, String>();
 	String[][] ammotypes = {
+			{"amregister", "Anv_Best_etc"},
+			{"anvisningar", "Anv_Best_etc"},
+			{"bestammelser", "Anv_Best_etc"},
+			{"burkladdn", "laddningar"},
+			{"dagligen", "Anv_Best_etc"},
+			{"sprangmedel", "laddningar"},
+			{"foreskrift", "Anv_Best_etc"},
+			{"forkortningar", "Abbrevations"},
+			{"forteckningar", "Forteckningar"},
 			{"handgranat", "Hgr"},
 			{"hgr", "Hgr"},
+			{"handgr", "Hgr"},
+			{"inledning", "Anv_Best_etc"},
+			{"innehall", "Anv_Best_etc"},
+			{"malning", "Malning_Markning"},
 			{"minor", "Mine"},
 			{"mina", "Mine"},
-			{"robot", "Robot"},
-			{"raket", "Rocket"},
-			{"zon", "fuze"},
-			{"ror", "fuze"},
-			{"stid", "fuze"},
-			{"tums", "inch"},
+			{"mine", "Mine"},
+			{"minf", "Mine"},
+			{"minp", "Mine"},
+			{"minroj", "Mine"},
+			{"minutr", "Mine"},
+			{"narlys", "narlys"},
+			{"nodsignal", "nodsignal"},
+			{"overbefalhavaren", "medd_fran_ob"},
+
+			{"paketladdning", "laddningar"},
 			{"pund", "oldDesignation"},
+			{"pansarskott", "LAW"},
+			{"pskott", "LAW"},
+
+			{"rattelser", "Anv_Best_etc"},
+			{"rb_", "Robot"},
+			{"robot", "Robot"},
+			{"rsv", "RSV"},
+
+
+			{"raket", "Rocket"},
+			{"spetsplugg", "Spetsplugg"},
+
+			{"stubin", "stubin"},
+			{"tabell", "tabell"},
+			{"tandh", "primer"},
+			{"tandskruv", "tandskruv"},
+			{"tandskruf", "tandskruv"},
+			{"tskr", "tandskruv"},
+			{"tums", "inch"},
+
+			{"lyspatron", "signalCtg"},
+			{"lyspistol", "signalCtg"},
+			{"signalam", "signalCtg"},
+			{"signalpatron", "signalCtg"},
+
+			// Fuzes
+			{"_sar", "fuze"},
+			{"bar_", "fuze"},
+			{"bpr_", "fuze"},
+			{"btr_", "fuze"},
+			{"dblr", "fuze"},
+			{"f_bar", "fuze"},
+			{"f_k_sar", "fuze"},
+			{"f_sar", "fuze"},
+			{"fbar", "fuze"},			
+			{"fk_sar", "fuze"},
+			{"hk_dblr", "fuze"},
+			{"hk_dblr", "fuze"},
+			{"hk_sar", "fuze"},
+			{"li_", "fuze"}, // LIAB
+			{"ror", "fuze"},
+			{"sar_", "fuze"},
+			{"stid", "fuze"},
+			{"tidror", "fuze"},
+			{"zon", "fuze"}
 	};
-
-	//    types.put("John", "Taxi Driver");
-	//    types.put("Mark", "Professional Killer");
-
-	//	
-
-	Path resultBasePath;
-	Path _00_19;
-	Path _20_39;
-	//	Path _3;
-	Path _40_89;
-	//	Path _5;
-	//	Path _6;
-	//	Path _7;
-	//	Path _8;
-	Path _99_;
-	Path AToZ;
-
-	//	Windows
-	//	String sysDirSplitter = "\\";
-
-	//	Linux
-	String sysDirSplitter = "/";
-	String sysBasePath;
-
 
 	public DirectoryService(Path resultBasePath) throws IOException{
 		this.resultBasePath = resultBasePath;
 		String resultBasePathString = resultBasePath.toString();
 		String sysBasePath = resultBasePathString + sysDirSplitter;
 
-		//		ammoType.put(arg0, arg1)
-		//
-		//		_00_19 = Paths.get(sysBasePath + "00-19");
-		//		_20_39 = Paths.get(sysBasePath + "20-39");
-		//		//		_3 = Paths.get(sysBasePath + "3");
-		//		_40_89 = Paths.get(sysBasePath + "40-89");
-		//		//		_5 = Paths.get(sysBasePath + "5");
-		//		//		_6 = Paths.get(sysBasePath + "6");
-		//		//		_7 = Paths.get(sysBasePath + "7");
-		//		//		_8 = Paths.get(sysBasePath + "8");
-		//		_99_ = Paths.get(sysBasePath + "90-");
 		AToZ = Paths.get(sysBasePath + "A_To_Z");
 		createDirsIfNotExists();
+		if (System.getProperty("os.name").contains("Windows")) {
+			this.sysDirSplitter = "\\";	
+		} else {
+			this.sysDirSplitter = "/";
+		}
 	}
 
 	private  void createDirsIfNotExists() throws IOException{
 		List<Path> paths = new ArrayList<>();
-		//		paths.add(_1);
-		//		paths.add(_2);
-		//		paths.add(_3);
-		//		paths.add(_4);
-		//		paths.add(_5);
-		//		paths.add(_6);
-		//		paths.add(_7);
-		//		paths.add(_8);
-		//		paths.add(_9);
 		paths.add(AToZ);
 		for (Path path : paths) {
 			if ( ! path.toFile().exists()) {
@@ -96,37 +124,13 @@ public class DirectoryService {
 		}
 	}
 
-	//	public Path sort(Path fileName){
-	//		//		Path fName = fileName.toPath();
-	//		switch(fileName.toString().charAt(0)) {
-	//		case '1' :
-	//			return _1; 
-	//		case '2' :
-	//			return _2; 
-	//		case '3' :
-	//			return _3; 
-	//		case '4' :
-	//			return _4; 
-	//		case '5' :
-	//			return _5; 
-	//		case '6' :
-	//			return _6; 
-	//		case '7' :
-	//			return _7; 
-	//		case '8' :
-	//			return _8; 
-	//		case '9' :
-	//			return _9; 
-	//		default :
-	//			return AToZ; 
-	//		}
-	//	}
-
 	public Path getDestDir(String fileName){
 		String fileNameLower = fileName.toLowerCase();
 		String type = "";
 		String subType = "";
-		String caliber = "";
+		String caliber = ""; // i e 10.5cm, 5.56mm, 8mm, 8cm etc
+		Path destDir;
+
 		if (Character.isDigit(fileName.charAt(0))) {
 			caliber = getStartingDigits(fileName);
 			if (fileNameLower.contains("tum")) {
@@ -144,10 +148,14 @@ public class DirectoryService {
 			for (String[] arr : ammotypes) {
 				if (fileNameLower.contains(arr[0])) {
 					type = arr[1];
+					break;
 				}
-			}
+			} 
 		}
-		Path destDir = Paths.get(resultBasePath.toString() + "/" + type + "/");
+		if (type.length() == 0) {
+			type = fileNameLower.toUpperCase().substring(0, 1) + sysDirSplitter;
+		}
+		destDir = Paths.get(resultBasePath.toString() + sysDirSplitter + type + sysDirSplitter);
 		if ( ! Files.exists(destDir)) {
 			System.out.println("destDir=" + destDir.toString());
 			new File(destDir.toString()).mkdirs();
@@ -157,6 +165,9 @@ public class DirectoryService {
 
 	private String getStartingDigits(String fileName) {
 		String caliber = "";
+		if (fileName.charAt(0) == '_') {
+			fileName = fileName.substring(1);
+		}
 		for (int i = 0; i <= 4; i++) {
 			if (Character.isDigit(fileName.charAt(i)) ) {
 				//				System.out.println("cal=" + caliber + "\tfileName.charAt(i)="+ fileName.charAt(i) + "\t " + Character.isDigit(fileName.charAt(i)));
@@ -174,6 +185,24 @@ public class DirectoryService {
 				break;
 			}
 		}
+
+		return caliber;
+	}
+
+	public String changeKnownCmCalibersToMm(String caliber){
+		String[][] caliberChanges = {
+				{"7.5cm", "75mm"},
+				{"13.5cm", "135mm"},
+				{"14.5cm", "245mm"},
+				{"30.5cm", "305mm"},
+				{"cm", "mm"},
+				{"cm", "mm"}};
+		for (String[] cal : caliberChanges) {
+			if (cal[0].equals(caliber)) {
+				return cal[1];
+			}
+		}
 		return caliber;
 	}
 }
+

@@ -18,7 +18,7 @@ public class FileFinder {
 		for (final File child : sourceDirectory.listFiles()) {
 			if (child.isFile() && extensionFilter.accept(child)) {
 				dirResult.add(child.toPath());
-				System.out.println("child = " + child.toPath().toString());
+//				System.out.println("child = " + child.toPath().toString());
 			}
 		}
 		return dirResult;

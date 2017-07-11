@@ -9,20 +9,17 @@ import java.util.List;
 import java.util.Objects;
 
 public class Starter {
-
 	public static void main(String[] args) throws IOException {
+		Path startDirectory;
+		Path resultDirectory;
 		
-//		Path startDirectory = Paths.get("C:\\Users\\nw\\Documents\\tmp\\");
-//		Path startDirectory = Paths.get("C:\\Users\\nw\\Documents\\AMKAT 2015\\");
-		
-//		Path resultDirectory = Paths.get("C:\\Users\\nw\\Documents\\tmp\\results");
-		
-		
-//		 Linux test
-		Path startDirectory = Paths.get("/mnt/c/dev/pdfToJpg/input");
-		Path resultDirectory = Paths.get("/mnt/c/dev/pdfToJpg/output");
-//		Path startDirectory = Paths.get("/home/nw/dev/imeExpTest");
-//		Path resultDirectory = Paths.get("/home/nw/dev/destTest");
+		if (System.getProperty("os.name").contains("Windows")) {
+			startDirectory = Paths.get("C:\\Users\\nw\\Documents\\tmp\\input");	
+			resultDirectory = Paths.get("C:\\Users\\nw\\Documents\\tmp\\output");
+		} else {
+			startDirectory = Paths.get("/mnt/c/dev/pdfToJpg/input");
+			resultDirectory = Paths.get("/mnt/c/dev/pdfToJpg/output");
+		}
 		
 		DirectoryService ds = new DirectoryService(resultDirectory);
 		
@@ -39,15 +36,11 @@ public class Starter {
 		ImageExtractor ie = new ImageExtractor(ds);
 		
 		for (Path path : pathList) {
+			System.out.println("PATH=" + path.toString());
 			List<PageBookmark> bookmarkList  = new ArrayList<>();
 			bookmarkList = bookmarkExtractor.getBookmarks(path);
 			bookmarkList.removeIf(Objects::isNull);
 			ie.extractImages(path, bookmarkList, ds);
 		}
-		
-		
-		
-		
-		
 	}
 }

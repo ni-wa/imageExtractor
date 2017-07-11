@@ -56,10 +56,11 @@ public class ImageExtractor extends PDFStreamEngine {
 						String bookmarkName = bookmarkList.get(currentPage - 1).getBookmark();
 						String imageFileName = bookmarkName + " " + pdfFileName + "p" + currentPage + ".jpg";
 						imageFileName = fileNameService.runAllStringFixes(imageFileName);
-						System.out.println("imageFileName=" +imageFileName + "---");
-						System.out.println("imageFileName.length()=" + imageFileName.length());
+//						System.out.println("imageFileName=" +imageFileName + "---");
+//						System.out.println("imageFileName.length()=" + imageFileName.length());
 //						Path destinationPath = ds.sort(Paths.get(imageFileName));
 						Path destinationPath = ds.getDestDir(imageFileName);
+						System.out.println("destinationPath = " + destinationPath.toString());
 						File file = new File(destinationPath.toString(), String.format(imageFileName, currentPage, index, image.getSuffix()));
 //						File file = new File(destinationPath.toString(), String.format(imageFileName, currentPage, index, image.getSuffix()));
 						ImageIOUtil.writeImage(image.getImage(), image.getSuffix(), new FileOutputStream(file));

@@ -87,9 +87,12 @@ public class BookmarkExtractor {
 		String bookmarkTitle = "";
 
 		while (current != null) {
+			try {
+			
 			PDPage currentPage = current.findDestinationPage(document);
 			if (currentPage != null) {
 				pageNumber = pageTree.indexOf(currentPage) + 1;
+				System.out.println("page = " + pageNumber);
 				bookmarkTitle = current.getTitle();
 				// System.out.println("Page:" + pageNumber + "\t" +
 				// bookmarkTitle);
@@ -101,6 +104,9 @@ public class BookmarkExtractor {
 					pageBookmarks.add(pBookmark);
 				}
 				printBookmark(pageBookmarks, current, indentation + "    ");
+			}
+			} catch (Exception e) {
+				System.err.println(e.getMessage().toString());
 			}
 			current = current.getNextSibling();
 		}
