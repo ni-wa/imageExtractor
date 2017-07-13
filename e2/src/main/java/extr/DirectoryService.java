@@ -25,11 +25,29 @@ public class DirectoryService {
 	 * Set files to correct dir by first char in file name 
 	 */
 	String[][] ammotypes = {
+			{"ryskt", "Russian"},
+			{"ryssland", "Russian"},
+			{"fransk", "France"},
+			{"frankrike", "France"},
+			{"eng", "England"},
+			{"tysk", "German"},
+			{"spitze", "German"},
+			{"belg", "Foreign"},
+			{"ital", "Foreign"},
+			{"polsk", "Foreign"},
+			{"us", "Foreign"},
+
 			{"amregister", "Anv_Best_etc"},
 			{"anvisningar", "Anv_Best_etc"},
 			{"bestammelser", "Anv_Best_etc"},
 			{"burkladdn", "laddningar"},
 			{"dagligen", "Anv_Best_etc"},
+			{"eldmarkering", "Eldmarkering"},
+			{"enhetslaster", "Enhetslaster"},
+			{"gevarsrokgr", "RifleGrenade"},
+			{"grokgr", "RifleGrenade"},
+			{"markning", "Marking"},
+
 			{"sprangmedel", "laddningar"},
 			{"foreskrift", "Anv_Best_etc"},
 			{"forkortningar", "Abbrevations"},
@@ -97,7 +115,21 @@ public class DirectoryService {
 			{"sar_", "fuze"},
 			{"stid", "fuze"},
 			{"tidror", "fuze"},
-			{"zon", "fuze"}
+			{"zon", "fuze"},
+
+			// Other
+			{"bomb", "Bomb"},
+			{"brandam", "BrandAm"},
+			{"bult", "BultAm"},
+			{"ovnb71", "Bomb"},
+			{"rakkaps", "Rocket"},
+			{"laddning", "Laddning"},
+			{"burklng", "Laddning"},
+			{"dynamit", "Laddning"},
+			{"detonator", "Detonator"},
+			{"fyrpatron", "Fyrpatron"},
+			{"instruktion", "Instruction"}
+
 	};
 
 	public DirectoryService(Path resultBasePath) throws IOException{
@@ -128,7 +160,7 @@ public class DirectoryService {
 		String fileNameLower = fileName.toLowerCase();
 		String type = "";
 		String subType = "";
-		String caliber = ""; // i e 10.5cm, 5.56mm, 8mm, 8cm etc
+		String caliber = "";
 		Path destDir;
 
 		if (Character.isDigit(fileName.charAt(0))) {
@@ -152,6 +184,7 @@ public class DirectoryService {
 				}
 			} 
 		}
+
 		if (type.length() == 0) {
 			type = fileNameLower.toUpperCase().substring(0, 1) + sysDirSplitter;
 		}
@@ -163,25 +196,27 @@ public class DirectoryService {
 		return destDir;
 	}
 
-	private String getStartingDigits(String fileName) {
+	public String getStartingDigits(String fileName) {
 		String caliber = "";
 		if (fileName.charAt(0) == '_') {
 			fileName = fileName.substring(1);
 		}
-		for (int i = 0; i <= 4; i++) {
+
+		String pattern = "(^\\d+)(._)(\\[abd-jln-z)";
+
+		for (int i = 0; i <= 4 && i < fileName.length(); i++) {
+
+
 			if (Character.isDigit(fileName.charAt(i)) ) {
-				//				System.out.println("cal=" + caliber + "\tfileName.charAt(i)="+ fileName.charAt(i) + "\t " + Character.isDigit(fileName.charAt(i)));
-				//				System.out.println("cal * 10 = "+ caliber*10 + "\t class=" + fileName.substring(i,1).getClass().toString());
-				//				System.out.println("filename =" + fileName.toString() + "\ti=" + i);
-				//				System.out.println("Integer.parseInt(fileName.substring(i,1)=" + Integer.parseInt(fileName.substring(i,i+1)));
 				caliber = caliber + fileName.substring(i,i+1);
-			} else if (fileName.charAt(i) == '.') {
-				caliber = caliber + "." ;
-			}  else if (fileName.substring(i, i +1).contains("c")) {
+			} else if (fileName.substring(i, i +1).contains("c")) {
 				caliber = caliber + "cm";
 				break;
-			}  else if (fileName.substring(i, i +1).contains("m")) {
+			} else if (fileName.substring(i, i +1).contains("m")) {
 				caliber = caliber + "mm";
+				break;
+			} else if (fileName.substring(i, i +1).contains("k")) {
+				caliber = caliber + "kg";
 				break;
 			}
 		}

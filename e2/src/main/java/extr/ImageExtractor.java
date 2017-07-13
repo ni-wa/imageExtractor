@@ -108,6 +108,8 @@ public class ImageExtractor extends PDFStreamEngine {
 			page++;
 		}
 	}
+	
+	
 }
 //    protected int documentImageCount = 0;
 //
